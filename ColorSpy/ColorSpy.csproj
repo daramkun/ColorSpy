@@ -1,9 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Platforms>AnyCPU;x64;x86</Platforms>
+	</PropertyGroup>
 
+	<PropertyGroup>
+		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+		<PublishSingleFile>true</PublishSingleFile>
+		<Version>1.1</Version>
+		<Authors>Jin Jae Yeon</Authors>
+		<Company>DARAM WORLD</Company>
+		<PackageProjectUrl></PackageProjectUrl>
+		<RepositoryUrl>https://github.com/daramkun/ColorSpy</RepositoryUrl>
+	</PropertyGroup>
+	
 </Project>

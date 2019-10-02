@@ -56,6 +56,33 @@ namespace ColorSpy
 			v = rgb2v ( color.R, color.G, color.B );
 		}
 
+		private void GetHSVFromColor ( Color color, out int h, out int s, out int v )
+		{
+			byte r = color.R, g = color.G, b = color.B;
+
+			byte rgbMin = r < g ? ( r < b ? r : b ) : ( g < b ? g : b ),
+				rgbMax = r > g ? ( r > b ? r : b ) : ( g > b ? g : b );
+
+			v = rgbMax;
+			if ( v == 0 )
+			{
+				h = 0;
+				s = 0;
+				return;
+			}
+
+			s = 255 * ( rgbMax - rgbMin ) / v;
+			if ( s == 0 )
+			{
+				h = 0;
+				return;
+			}
+
+			if ( rgbMax == r ) h = 0 + 43 * ( g - b ) / ( rgbMax - rgbMin );
+			else if ( rgbMax == g ) h = 85 + 43 * ( b - r ) / ( rgbMax - rgbMin );
+			else h = 171 + 43 * ( r - g ) / ( rgbMax - rgbMin );
+		}
+
 		public MainForm ()
 		{
 			InitializeComponent ();
@@ -69,19 +96,28 @@ namespace ColorSpy
 				{
 					var color = GetColorFromCursor ();
 					GetYUVFromColor ( color, out int y, out int u, out int v );
+					GetHSVFromColor ( color, out int h, out int s, out int v2 );
 
-					BeginInvoke ( new Action ( () =>
+					try
 					{
-						textBoxR.Text = color.R.ToString ();
-						textBoxG.Text = color.G.ToString ();
-						textBoxB.Text = color.B.ToString ();
+						BeginInvoke ( new Action ( () =>
+						{
+							textBoxR.Text = color.R.ToString ();
+							textBoxG.Text = color.G.ToString ();
+							textBoxB.Text = color.B.ToString ();
 
-						textBoxY.Text = y.ToString ();
-						textBoxU.Text = u.ToString ();
-						textBoxV.Text = v.ToString ();
+							textBoxY.Text = y.ToString ();
+							textBoxU.Text = u.ToString ();
+							textBoxV.Text = v.ToString ();
 
-						pictureBoxColor.BackColor = color;
-					} ) ).AsyncWaitHandle.WaitOne ();
+							textBoxH.Text = h.ToString ();
+							textBoxS.Text = s.ToString ();
+							textBoxV2.Text = v2.ToString ();
+
+							pictureBoxColor.BackColor = color;
+						} ) ).AsyncWaitHandle.WaitOne ();
+					}
+					catch { }
 
 					Thread.Sleep ( 0 );
 				}
